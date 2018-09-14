@@ -29,6 +29,11 @@ unsigned int compute_difference(unsigned int t0, unsigned int t1){
     return t1 - t0;
 }
 
+//had to convert ticks to milliseconds 4 times so I made a method
+float to_ms(float ticks){
+    return (ticks/XS1_TIMER_HZ)*1000000;
+}
+
 //delay function waits for the timer for 1 sec + a random amount less than a sec
 //called in between the start up and the exam
 void delay(){
@@ -88,7 +93,7 @@ float find_med(float arr[], int n){
             if(arr[j] > arr[j+1]){
                 int temp = arr[j];
                 arr[j] = arr[j+1];
-                arr[j+1] = arr[j];
+                arr[j+1] = temp;
             }
         }
     }
@@ -100,15 +105,15 @@ float find_med(float arr[], int n){
 
 void print_stats(float arr[]){
     int arr_size = sample_size;
-    float avg = find_avg(arr, arr_size);
-    float med = find_med(arr, arr_size);
+    float avg = to_ms(find_avg(arr, arr_size));
+    float med = to_ms(find_med(arr, arr_size));
     //float high = find_high(arr, arr_size);
     //float low = find_low(arr, arr_size);
 
     //at this point the array has been sorted so there's no reason
     //not to just pull the highest and lowest from the array directly
-    float high = arr[sample_size-1];
-    float low = arr[0];
+    float high = to_ms(arr[sample_size-1]);
+    float low = to_ms(arr[0]);
      printf("AVERAGE: %fms \nMEDIAN: %fms \nHIGHEST: %fms \nLOWEST: %fms \n", avg, med, high, low);
 }
 
