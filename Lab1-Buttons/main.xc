@@ -62,8 +62,8 @@ int main(){
             oLed <: 0;
             tmr :> times[1];
         }
-       unsigned total_micro = compute_difference(times[0], times[1]);
-       float total_s = (float)total_micro/1000000;
+       float total_s= (float)compute_difference(times[0], times[1])/XS1_TIMER_HZ;
+       unsigned total_micro = total_s*1000000;
        printf("Delay was %d microseconds (%f seconds)\n", total_micro, total_s);
        times[0] = times[1];
 
