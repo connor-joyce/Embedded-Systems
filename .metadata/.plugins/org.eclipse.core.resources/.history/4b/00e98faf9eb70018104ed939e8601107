@@ -1,0 +1,16 @@
+/*
+ * main.xc
+ *
+ *  Created on: Sep 13, 2018
+ *      Author: connor
+ */
+#include <xs1.h>
+
+out port oLEDs = XS1_PORT_32A;
+
+int main(){
+    unsigned pattern = 0b01000001010100000000;
+    oLEDs <: pattern;
+    while(1);
+    return 0;
+}

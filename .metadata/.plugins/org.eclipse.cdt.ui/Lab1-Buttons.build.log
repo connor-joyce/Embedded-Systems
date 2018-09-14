@@ -1,0 +1,18 @@
+17:34:11 **** Incremental Build of configuration Default for project Lab1-Buttons ****
+xmake CONFIG=Default all 
+Checking build modules
+No build modules used.
+Analyzing main.xc
+../main.xc:53:9: warning: unused variable `count' [-Wunused-variable]
+    int count = 1;
+        ^~~~~
+Creating dependencies for main.xc
+Compiling main.xc
+../main.xc:53:9: warning: unused variable `count' [-Wunused-variable]
+    int count = 1;
+        ^~~~~
+Creating Lab1-Buttons.xe
+Build Complete
+
+17:34:12 Build Finished (took 615ms)
+

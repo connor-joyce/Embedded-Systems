@@ -1,0 +1,13 @@
+16:11:41 **** Incremental Build of configuration Default for project Lab1-LEDs ****
+xmake CONFIG=Default all 
+Checking build modules
+No build modules used.
+Analyzing main.xc
+Propagating analysis
+Creating dependencies for main.xc
+Compiling main.xc
+Creating Lab1-LEDs.xe
+Build Complete
+
+16:11:42 Build Finished (took 558ms)
+

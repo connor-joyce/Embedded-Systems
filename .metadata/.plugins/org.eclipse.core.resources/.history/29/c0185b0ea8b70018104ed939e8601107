@@ -1,0 +1,54 @@
+/*
+ * main.xc
+ *
+ *  Created on: Sep 13, 2018
+ *      Author: root
+ */
+
+
+#include <xs1.h>
+#include <stdio.h>
+
+
+in port iButton = XS1_PORT_32A;
+out port oLed = XS1_PORT_1A;
+
+int main_sampling(){
+    unsigned value;
+    while(1){
+        iButton :> value;
+        if(value){
+            printf("button pressed");
+            //if the value is 0, which means the button is being pressed
+            //todo illuminate the led
+            //assign the value 1 to the led
+            //which turns the led on
+            oLed <: 0b1;
+        }
+
+        else{
+            //printf("button unpressed");
+            //if the value of the button is 1
+            //give the led a value of 0, off
+            oLed <: 0b0;
+        }
+        //turn off led
+    }
+    return 0;
+}
+
+int main(){
+    unsigned value;
+    iButton :> value;
+    while(1){
+        iButton when pinsneq(value) :> value;
+        printf(value);
+        unsigned x = value%2;
+        if(x == 1){
+            oLed <: 1;
+        }
+        else{
+            oLed <: 0;
+        }
+    }
+}

@@ -1,0 +1,31 @@
+/*
+ * main.xc
+ *
+ *  Created on: Sep 13, 2018
+ *      Author: root
+ */
+
+
+#include <xs1.h>
+#include <stdio.h>
+
+in port iButton = XS1_PORT_32A;
+out port oLed = XS1_PORT_1A;
+
+int main(){
+    unsigned value;
+    while(1){
+        iButton :> value;
+        printf(value);
+        if(!value){
+            //todo illuminate the led
+            oLed <: 0b1;
+        }
+
+        else{
+            oLed <: 0b0;
+        }
+        //turn off led
+    }
+    return 0;
+}
