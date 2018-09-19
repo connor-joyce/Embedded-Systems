@@ -9,9 +9,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define flash_number 3
-#define sample_size 10
-#define flash_period XS1_TIMER_HZ/2
+#define FLASH_NUMBER 3
+#define SAMPLE_SIZE 10
+#define FLASH_PERIOD XS1_TIMER_HZ/6
+#define TICKS_PER_SECOND XS1_TIMER_HZ
+#define MAX_TIMER_TICKS TICKS_PER_SECOND*42;
+#define TICKS_PER_MILLISECOND TICKS_PER_SECOND*1000
 
 out port led1 = XS1_PORT_1A;
 out port led2 = XS1_PORT_1D;
@@ -19,11 +22,14 @@ out port led2 = XS1_PORT_1D;
 in port ibutton = XS1_PORT_32A;
 
 //the first if statement takes into account that the timer may have initially been %'ed
-//down to a number that would be lower than the starting time. By adding 1 second of clock
-//ticks I am able to find the actual distance between the two
+//down to a number that would be lower than the starting time. By adding 42 seconds of clock
+//ticks I am able to find the actual distance between the two. This is because the clock rolls over
+//after 42 seconds.
 unsigned int compute_difference(unsigned int t0, unsigned int t1){
     if(t1 < t0){
-        t1 += XS1_TIMER_HZ;
+        //also apparently the underflow could just fix itself
+        //but I don't trust like that
+        t1 += MAX_TIMER_TICKS;
     }
 
     return t1 - t0;
@@ -31,7 +37,26 @@ unsigned int compute_difference(unsigned int t0, unsigned int t1){
 
 //had to convert ticks to milliseconds 4 times so I made a method
 float to_ms(float ticks){
-    return (ticks/XS1_TIMER_HZ)*1000000;
+    return (ticks/TICKS_PER_MILLISECOND);
+}
+
+//flashes two given 1 bit leds the flash_number of times over a given period
+void flash_2_1bit_LEDs(out port led1, out port led2, int period, int flash_number){
+    timer tmr;
+    unsigned int timer_value;
+    for(int i = 0; i<flash_number; ++i){
+        tmr :> timer_value;
+        timer_value += period;
+        led1 <: 1;
+        led2 <: 1;
+
+        tmr when timerafter(timer_value) :> timer_value;
+        timer_value += period;
+        led1 <: 0;
+        led2 <: 0;
+
+        tmr when timerafter(timer_value) :> timer_value;
+    }
 }
 
 //delay function waits for the timer for 1 sec + a random amount less than a sec
@@ -39,130 +64,76 @@ float to_ms(float ticks){
 void delay(){
     timer tmr;
     unsigned t;
-    float delay = XS1_TIMER_HZ + rand()% XS1_TIMER_HZ;
+    float delay = TICKS_PER_SECOND + rand()% TICKS_PER_SECOND;
     tmr :> t;
     t+= delay;
     tmr when timerafter(t) :> void;
 }
 
-
-//find low, iterates through list and finds the lowest number in the array,
-//may be replaced as the array gets sorted at some point. Removing the need to
-//iterate through the list at all
-float find_low(float arr[], int n){
-    float low = arr[0];
-        for(int i = 0; i<n; ++i){
-            if(low > arr[i]){
-                low = arr[i];
+//iterates through the list twice, sorts it using bubble sort, and then once again to get the average value
+//returns middle most element post sort, average value, min value, and max value
+{float, float, float, float} find_statistics(float arr[]){
+    float sum = 0;
+    //bubble sort found at
+    //https://www.geeksforgeeks.org/bubble-sort/
+    for(int i = 0; i<SAMPLE_SIZE-1; i++){
+            for(int j = 0; j<SAMPLE_SIZE-i-1; j++){
+                if(arr[j] > arr[j+1]){
+                    int temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                }
             }
         }
 
-        return low;
-}
 
-//find high iterates through the list and returns the largest number in the array
-//may also be replaced as the sorting of the list removes the need to do any iteration
-float find_high(float arr[], int n){
-    float high = arr[0];
-    for(int i = 0; i<n; ++i){
-        if(high < arr[i]){
-            high = arr[i];
-        }
-    }
-
-    return high;
-}
-
-//sums every element in the array and divides them by the sample_size
-//returning the average
-float find_avg(float arr[], int n){
-    float sum = 0;
-    for(int i = 0; i<n; ++i){
+    //since Bubble sort moves things around, still have to iterate through to get the average
+    for(int i = 0; i<SAMPLE_SIZE; ++i){
         sum += arr[i];
     }
 
-    return sum/n;
+    return {arr[(SAMPLE_SIZE/2) - 1], sum/SAMPLE_SIZE, arr[0], arr[SAMPLE_SIZE-1]};
+
 }
-
-//returns the middle most value of the array, in terms of size. This uses bubble sort to
-//get all the elements in order and then returns the middle most element. This sort
-//is what makes the find_min and find_max methods obsolete
-float find_med(float arr[], int n){
-    for(int i = 0; i<n-1; i++){
-        for(int j = 0; j<n-i-1; j++){
-            if(arr[j] > arr[j+1]){
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
-    }
-
-    return arr[(n/2)-1];
-}
-
-//uses all the "find" functions to get a series of variables and then print them to the console
 
 void print_stats(float arr[]){
-    int arr_size = sample_size;
-    float avg = to_ms(find_avg(arr, arr_size));
-    float med = to_ms(find_med(arr, arr_size));
-    //float high = find_high(arr, arr_size);
-    //float low = find_low(arr, arr_size);
+    float med = 0;
+    float avg = 0;
+    float min = 0;
+    float max = 0;
+    {med, avg, min, max} = find_statistics(arr);
 
-    //at this point the array has been sorted so there's no reason
-    //not to just pull the highest and lowest from the array directly
-    float high = to_ms(arr[sample_size-1]);
-    float low = to_ms(arr[0]);
-     printf("AVERAGE: %fms \nMEDIAN: %fms \nHIGHEST: %fms \nLOWEST: %fms \n", avg, med, high, low);
+     printf("AVERAGE: %fms \nMEDIAN: %fms \nHIGHEST: %fms \nLOWEST: %fms \n", avg, med, max, min);
 }
 
+
+
 int main(){
-    float records[sample_size];
+    float records[SAMPLE_SIZE];
     timer tmr;
     while(1){
         unsigned t;
-        unsigned toggle = 1;
         unsigned button_value;
-        for(int i = 0; i<flash_number; ++i){
-            tmr :> t;
-            //flash period is set to 1/2 seconds worth of ticks
-            t+= flash_period;
-            tmr when timerafter(t) :> void;
-
-            //toggle both of the lights and then flip toggle, so that the next time around
-            //it inverts the current settings
-            led1 <: toggle;
-            led2 <: ~toggle;
-            toggle = ~toggle;
-        }
+        flash_2_1bit_LEDs(led1, led2, FLASH_PERIOD, FLASH_NUMBER);
         delay();
         unsigned start, end;
-        for(int i = 0; i<sample_size; ++i){
+        for(int i = 0; i<SAMPLE_SIZE; ++i){
             led1 <: 1;
             led2 <: 1;
             tmr :> start;
-            //takes button value (hopefully off at this point) and waits until its on
             ibutton :> button_value;
             ibutton when pinsneq(button_value) :> void;
-            //once the button is pressed the difference is computed and put directly into the
-            //array
-            tmr :> end;
-            records[i] = compute_difference(start, end);
-            //manually turn off the lights.
-            led1 <: 0;
-            led2 <: 0;
-
-            //unneccessary section, refuse to let the trial start over until
-            //the button has been released
-            ibutton :> button_value;
-            while(button_value%2 != 1){
-                ibutton :> button_value;
+            if(button_value & 0x1){
+                tmr :> end;
+                records[i] = to_ms(compute_difference(start, end));
+                //manually turn off the lights.
+                led1 <: 0;
+                led2 <: 0;
             }
 
             //delay for 1 second
           tmr :> t;
-          t += XS1_TIMER_HZ;
+          t += TICKS_PER_SECOND;
           tmr when timerafter(t) :> void;
         }
 
@@ -173,3 +144,4 @@ int main(){
     return 0;
 
 }
+

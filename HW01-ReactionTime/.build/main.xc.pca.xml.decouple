@@ -4,10 +4,8 @@
 <fDef name="delay_microseconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
 <fDef name="delay_milliseconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
 <fDef name="delay_seconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
-<fDef name="find_avg" global="true" noreturn="false" doNotSpecialize="false" numParams="2"/>
-<fDef name="find_high" global="true" noreturn="false" doNotSpecialize="false" numParams="2"/>
-<fDef name="find_low" global="true" noreturn="false" doNotSpecialize="false" numParams="2"/>
-<fDef name="find_med" global="true" noreturn="false" doNotSpecialize="false" numParams="2"/>
+<fDef name="find_statistics" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="flash_2_1bit_LEDs" global="true" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="main" global="true" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="print_stats" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="to_ms" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
@@ -32,6 +30,30 @@
     </values>
   </arg>
 </fCall>
+<fCall name="__builtin_timer_after" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_timer_after" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="rand" global="true" numArgs="0">
 </fCall>
 <fCall name="__builtin_timer_after" global="true" numArgs="2">
@@ -46,52 +68,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="to_ms" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="find_avg" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="to_ms" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="find_med" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="to_ms" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="to_ms" global="true" numArgs="1">
+<fCall name="find_statistics" global="true" numArgs="1">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -125,7 +102,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="__builtin_timer_after" global="true" numArgs="2">
+<fCall name="flash_2_1bit_LEDs" global="true" numArgs="4">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -134,6 +111,16 @@
   <arg num="1">
     <values>
       <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="intval"><intval isSigned="false" val="16666666"/></value>
+    </values>
+  </arg>
+  <arg num="3">
+    <values>
+      <value type="intval"><intval isSigned="true" val="3"/></value>
     </values>
   </arg>
 </fCall>
@@ -146,6 +133,13 @@
     </values>
   </arg>
   <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="to_ms" global="true" numArgs="1">
+  <arg num="0">
     <values>
       <value type="unknown"/>
     </values>
