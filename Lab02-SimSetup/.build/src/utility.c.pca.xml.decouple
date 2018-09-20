@@ -1,0 +1,23 @@
+<preCompilationAnalysis file="../src/utility.c">
+  <fCall global="true" name="timer_diff"/>
+  <fCall global="true" name="timer_diff.nstackwords"/>
+  <fCall global="true" name="timer_diff.maxcores"/>
+  <fCall global="true" name="timer_diff.maxtimers"/>
+  <fCall global="true" name="timer_diff.maxchanends"/>
+  <fCall global="true" name="format_message"/>
+  <fCall global="true" name="format_message.nstackwords"/>
+  <fCall global="true" name="__floatunsisf.nstackwords"/>
+  <fCall global="true" name="__divsf3.nstackwords"/>
+  <fCall global="true" name="__extendsfdf2.nstackwords"/>
+  <fCall global="true" name="sprintf.nstackwords"/>
+  <fCall global="true" name="format_message.maxcores"/>
+  <fCall global="true" name="sprintf.maxcores"/>
+  <fCall global="true" name="format_message.maxtimers"/>
+  <fCall global="true" name="sprintf.maxtimers"/>
+  <fCall global="true" name="format_message.maxchanends"/>
+  <fCall global="true" name="sprintf.maxchanends"/>
+  <fCall global="true" name="sprintf"/>
+  <fCall global="true" name="__floatunsisf"/>
+  <fCall global="true" name="__divsf3"/>
+  <fCall global="true" name="__extendsfdf2"/>
+</preCompilationAnalysis>

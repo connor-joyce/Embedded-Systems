@@ -1,0 +1,154 @@
+<preCompilationAnalysis file="../src/Lab02-Channels.xc">
+<fDef name="button_simulator" global="true" noreturn="true" doNotSpecialize="false" numParams="0"/>
+<fDef name="delay_microseconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
+<fDef name="delay_milliseconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
+<fDef name="delay_seconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
+<fDef name="display_output" global="true" noreturn="true" doNotSpecialize="false" numParams="1"/>
+<fDef name="main" global="true" noreturn="false" doNotSpecialize="false" numParams="0"/>
+<fDef name="monitor_buttons" global="true" noreturn="true" doNotSpecialize="false" numParams="1"/>
+<fCall name="delay_ticks_longlong" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_ticks_longlong" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_ticks_longlong" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="display_output" global="true" numArgs="1" impId="0">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="monitor_buttons" global="true" numArgs="1" impId="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="button_simulator" global="true" numArgs="0" impId="2">
+</fCall>
+<fCall name="sprintf" global="true" numArgs="3">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="printstr" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_pins_eq" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_pins_eq" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_pins_eq" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_pins_eq" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_pins_eq" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_pins_eq" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="__builtin_timer_after" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+</preCompilationAnalysis>
