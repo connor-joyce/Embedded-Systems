@@ -66,10 +66,6 @@ void encoder_task(in port iEncoder, out port oLed1, out port oLed2){
     int led;
     while(1){
         iEncoder :> led;
-//        led2 = led1;
-//        led1 &= 0b1;
-//        led2 &= 0b10;
-        //led2 >> 1;
         oLed1 <: led&0b1;
         oLed2 <: ((led&0b10) >> 1);
     }
