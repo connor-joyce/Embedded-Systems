@@ -1,0 +1,166 @@
+#include <platform.h>
+#include <flashlib.h>
+#include <xclib.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+
+fl_PortHolderStruct portHolder_0 =
+{
+  PORT_SPI_MISO ,
+  PORT_SPI_SS,
+  PORT_SPI_CLK,
+  PORT_SPI_MOSI,
+  on tile[0]: XS1_CLKBLK_5
+};
+
+fl_DeviceSpec deviceSpecs[] =
+{
+  FL_DEVICE_ATMEL_AT25DF041A,
+  FL_DEVICE_ST_M25PE10,
+  FL_DEVICE_ST_M25PE20,
+  FL_DEVICE_ATMEL_AT25FS010,
+  FL_DEVICE_WINBOND_W25X40,
+  FL_DEVICE_AMIC_A25L016,
+  FL_DEVICE_AMIC_A25L40PT,
+  FL_DEVICE_AMIC_A25L40PUM,
+  FL_DEVICE_AMIC_A25L80P,
+  FL_DEVICE_ATMEL_AT25DF021,
+  FL_DEVICE_ATMEL_AT25F512,
+  FL_DEVICE_ESMT_F25L004A,
+  FL_DEVICE_NUMONYX_M25P10,
+  FL_DEVICE_NUMONYX_M25P16,
+  FL_DEVICE_NUMONYX_M45P10E,
+  FL_DEVICE_SPANSION_S25FL204K,
+  FL_DEVICE_SST_SST25VF010,
+  FL_DEVICE_SST_SST25VF016,
+  FL_DEVICE_SST_SST25VF040,
+  FL_DEVICE_WINBOND_W25X10,
+  FL_DEVICE_WINBOND_W25X20,
+  FL_DEVICE_AMIC_A25L40P,
+  FL_DEVICE_MACRONIX_MX25L1005C,
+  FL_DEVICE_MICRON_M25P40,
+  FL_DEVICE_ALTERA_EPCS1,
+};//fl_DeviceSpec
+
+int GetSPIInfo(const char tile_name[],
+               fl_PortHolderStruct & phs,
+               const char result_file_name[],
+               char * error_str)
+{
+  //Connect to the SPI device
+  if(fl_connectToDevice(phs, deviceSpecs, sizeof(deviceSpecs)/sizeof(fl_DeviceSpec)) != 0)
+  {
+    sprintf(error_str,"Error on %s: failed to connect to flash device. Please verify that SPI type is supported and that the correct SPI ports are defined within your xn file.\n", tile_name);
+    return 1;
+  }
+
+  //Get the page size of the SPI device
+  unsigned int pageSize = fl_getPageSize();
+  if(pageSize > 256)
+  {
+    fprintf(stderr, "Error on %s: page sizes greater than 256 bytes are unsupported (found %d bytes).\n", tile_name, pageSize);
+    return 1;
+  }
+
+  //Get the sector layout type of the SPI device
+  fl_ProtectionType layoutType = fl_getSectorLayoutType();
+  //Get the sector size of the SPI device
+  unsigned int firstSectorSize = fl_getSectorSize(0);
+
+  //Get the flash size of the SPI device
+  unsigned int flashSize = fl_getFlashSize();
+
+  //Get the spi divider and protection type of the SPI device
+  unsigned int spiDiv = 3;
+  fl_ProtectionType protType = PROT_TYPE_NONE;
+  for(int i = 0; i < sizeof(deviceSpecs); i++)
+  {
+    if(deviceSpecs[i].flashId == fl_getFlashType())
+    {
+      spiDiv = deviceSpecs[i].clockDiv;
+      protType = deviceSpecs[i].protectionType;
+      break;
+    }
+  }
+
+  //Output the spi info to the result file
+  FILE * movable result_file = fopen(result_file_name, "w");
+  if(result_file == NULL)
+  {
+    fprintf(stderr, "Error on %s: failed to open result file (\"%s\").\n", tile_name, result_file_name);
+    return 1;
+  }
+
+  fprintf(result_file, "%d\n%d\n%d\n%d\n", pageSize, firstSectorSize, flashSize, spiDiv);
+  fprintf(result_file, "%c\n", (protType == PROT_TYPE_SECS) ? 'P' : '-');
+  fprintf(result_file, "%c\n", (layoutType == SECTOR_LAYOUT_REGULAR) ? 'R' : 'I');
+  fprintf(result_file, "%d\n", fl_getNumSectors());
+
+  for(int i = 0; i < fl_getNumSectors(); i++)
+  {
+    fprintf(result_file, "%d\n", fl_getSectorAddress(i));
+  }
+
+  fclose(move(result_file));
+
+  //Disconnect from the SPI device
+  fl_disconnect();
+
+  return 0 ;
+}
+
+int main()
+{
+  chan backFrom0;
+
+  par
+  {
+    on tile[0]:
+    {
+      unsigned int isOkay = 1;
+      unsigned int respCount = 0;
+      unsigned int resCode;
+
+      while( respCount < 1 )
+      {
+        select
+        {
+        case backFrom0 :> resCode:
+          isOkay &= (resCode==0);
+          respCount++;
+          break;
+        }
+      }
+
+      backFrom0 <: 0;
+      backFrom0 :> resCode;
+
+      if( !isOkay )
+      {
+        exit(1);
+      }
+      exit(0);
+    }
+
+    on tile[0]:
+    {
+      unsigned int input;
+      char error_str[512];
+      int res = GetSPIInfo("tile[0]",
+                           portHolder_0, 
+                           "spi-n0-db61dd96",
+                           error_str);
+      backFrom0 <: res;
+      backFrom0 :> input;
+      if (res != 0)
+      {
+        printf(error_str);
+      }
+      backFrom0 <: input;
+    }
+  }
+
+  return(0);
+}
+
