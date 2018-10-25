@@ -110,10 +110,11 @@ void uart_transmit_bytes(out port oPort,
     int i = 0;
     while(1){
         uart_transmit_byte(oPort, buffer[i], baudrate);
-        i++;
+
         if(buffer[i] == '\0'){
-            break;
+            return;
         }
+        i++;
         //oPort <: 1;
     }
 }
@@ -196,6 +197,11 @@ void uart_to_console_task(chanend trigger_chan, chanend motor_chan, chanend enco
                 trigger_chan <: t;
                 printstrln(buffer);
             }
+            else if(!strncmp(buffer, "\0", 1)){
+                //fixes an issue where a null terminator comes through
+                //and then gets output as UNKNOWN INPUT:
+                //aesthetic fix
+            }
             else{
                 if(!strncmp(buffer, "F\0", 2)){
                     strcpy(t.data, "FULL FORWARD");
@@ -262,14 +268,17 @@ void uart_to_console_task(chanend trigger_chan, chanend motor_chan, chanend enco
 
 void line(const char buffer[]){
     timer t;
+    char temp[BUFFER_LENGTH];
     unsigned int t_val;
     t :> t_val;
+    strcpy(temp, buffer);
+    strcat(temp, "\r\n");
     t when timerafter(t_val + BUFFER_DELAY) :> void;
-    uart_transmit_bytes(oWiFiRX, buffer, BAUDRATE);
+    uart_transmit_bytes(oWiFiRX, temp, BAUDRATE);
     //sending "\r\n" as two bytes was giving me errors,
     //sending one byte at a time fixed it.
-    uart_transmit_byte(oWiFiRX, '\r', BAUDRATE);
-    uart_transmit_byte(oWiFiRX, '\n', BAUDRATE);
+    //uart_transmit_byte(oWiFiRX, '\r', BAUDRATE);
+    //uart_transmit_byte(oWiFiRX, '\n', BAUDRATE);
 
 }
 
@@ -286,7 +295,12 @@ void output_task(chanend trigger_chan){
             //print not line, line sends a command back to the Wifi module
             //which would then  get read as an unknown command and come right back here
             //infinite cycle
-            printstrln(t.data);
+            //printstrln(t.data);
+
+            //TEST THIS i think it causes an infinite loop
+            //once this works you're done
+            //printf("test");
+            line(t.data);
         }
 
     }

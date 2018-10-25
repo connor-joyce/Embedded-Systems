@@ -351,6 +351,23 @@
   </arg>
   <arg num="2">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="_safe_strncmp" global="true" numArgs="3">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
       <value type="intval"><intval isSigned="true" val="2"/></value>
     </values>
   </arg>
@@ -742,6 +759,30 @@
     </values>
   </arg>
 </fCall>
+<fCall name="_safe_strcpy" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="_safe_strcat" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="__builtin_timer_after" global="true" numArgs="2">
   <arg num="0">
     <values>
@@ -771,40 +812,6 @@
     </values>
   </arg>
 </fCall>
-<fCall name="uart_transmit_byte" global="true" numArgs="3">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="intval"><intval isSigned="false" val="13"/></value>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="9600"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="uart_transmit_byte" global="true" numArgs="3">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="intval"><intval isSigned="false" val="10"/></value>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="9600"/></value>
-    </values>
-  </arg>
-</fCall>
 <fCall name="_safe_strncmp" global="true" numArgs="3">
   <arg num="0">
     <values>
@@ -824,7 +831,7 @@
 </fCall>
 <fCall name="run_wifi_program" global="true" numArgs="0">
 </fCall>
-<fCall name="printstrln" global="true" numArgs="1">
+<fCall name="line" global="true" numArgs="1">
   <arg num="0">
     <values>
       <value type="unknown"/>
