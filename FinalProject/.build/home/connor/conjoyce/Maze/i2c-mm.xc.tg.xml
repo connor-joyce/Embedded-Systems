@@ -1,0 +1,92 @@
+<taskgraph>
+<task>
+  <name>delay_seconds</name>
+  <inFunction>delay_seconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_milliseconds</name>
+  <inFunction>delay_milliseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_microseconds</name>
+  <inFunction>delay_microseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>i2c_master_init</name>
+  <inFunction>i2c_master_init</inFunction>
+</task>
+<task>
+  <name>waitQuarter</name>
+  <inFunction>waitQuarter</inFunction>
+</task>
+<task>
+  <name>waitHalf</name>
+  <inFunction>waitHalf</inFunction>
+  <endOfSeqCalledFunction>waitQuarter</endOfSeqCalledFunction>
+</task>
+<task>
+  <name>highPulse</name>
+  <inFunction>highPulse</inFunction>
+</task>
+<task>
+  <name>startBit</name>
+  <inFunction>startBit</inFunction>
+  <endOfSeqCalledFunction>waitQuarter</endOfSeqCalledFunction>
+</task>
+<task>
+  <name>stopBit</name>
+  <inFunction>stopBit</inFunction>
+  <endOfSeqCalledFunction>waitQuarter</endOfSeqCalledFunction>
+</task>
+<task>
+  <name>floatWires</name>
+  <inFunction>floatWires</inFunction>
+</task>
+<task>
+  <name>tx8</name>
+  <inFunction>tx8</inFunction>
+</task>
+<task>
+  <name>i2c_master_do_rx</name>
+  <inFunction>i2c_master_do_rx</inFunction>
+</task>
+<task>
+  <name>i2c_master_rx</name>
+  <inFunction>i2c_master_rx</inFunction>
+</task>
+<task>
+  <name>i2c_master_read_reg</name>
+  <inFunction>i2c_master_read_reg</inFunction>
+</task>
+<task>
+  <name>i2c_master_16bit_read_reg</name>
+  <inFunction>i2c_master_16bit_read_reg</inFunction>
+</task>
+<task>
+  <name>i2c_master_write_reg</name>
+  <inFunction>i2c_master_write_reg</inFunction>
+</task>
+<task>
+  <name>i2c_master_16bit_write_reg</name>
+  <inFunction>i2c_master_16bit_write_reg</inFunction>
+</task>
+<task>
+  <name>i2c_master_readBit</name>
+  <inFunction>i2c_master_readBit</inFunction>
+</task>
+<task>
+  <name>i2c_master_readBits</name>
+  <inFunction>i2c_master_readBits</inFunction>
+</task>
+<task>
+  <name>i2c_master_writeBit</name>
+  <inFunction>i2c_master_writeBit</inFunction>
+</task>
+<task>
+  <name>i2c_master_writeBits</name>
+  <inFunction>i2c_master_writeBits</inFunction>
+</task>
+</taskgraph>
